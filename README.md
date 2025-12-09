@@ -1,4 +1,4 @@
-# kennedy-erc-binary
+# Doubly-robust Exposure Response Curve for Binary Outcomes
 
 Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on Kennedy (2017).
 
