@@ -71,7 +71,6 @@ plot_dose_response_enhanced(all_results, df, xlim = c(0, 500), ylim = c(0, 0.2))
 | `cens` | Censoring indicator (1 = observed) |
 | `use_censoring_weights` | Apply inverse probability of censoring weighting |
 | `stabilize_weights` | Use stabilized weights (recommended) |
-| `n.pts` | Number of evaluation points (default: 100) |
 
 ## Reference
 
