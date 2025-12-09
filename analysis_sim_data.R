@@ -6,8 +6,7 @@ source("kennedy_erf_binary.R")
 source("kennedy_erf_binary_censoring.R")
 source("plotting.R")
 
-# Fix censoring variables to ensure once censored, always censored
-# Assuming your data frame is called 'df'
+# Rework of censoring variables to ensure once censored, always censored
 
 # Create a function to fix censoring
 fix_censoring <- function(data) {
@@ -116,11 +115,7 @@ plot_dose_response_enhanced(all_results, df,
                             density_color = "#2E86AB", # Match main color
                             density_alpha = 0.2)
 
-
-# ============================================================================
-# YOUR EXISTING ANALYSIS FUNCTION - NO CHANGES NEEDED
-# ============================================================================
-
+# Analysis function
 analyze_continuous_treatment_effect <- function(df, period, 
                                                 bw.seq = seq(0.1, 2, length.out = 50),
                                                 use_censoring_weights = TRUE) {
@@ -156,10 +151,6 @@ analyze_continuous_treatment_effect <- function(df, period,
   return(results)
 }
 
-# ============================================================================
-# RUN YOUR EXISTING WORKFLOW - NO CHANGES NEEDED
-# ============================================================================
-
 # Run analysis for all periods (now with censoring correction)
 all_results <- list()
 for (period in 1:4) {
@@ -184,9 +175,7 @@ plot_dose_response_enhanced(all_results, df,
                             density_color = "#2E86AB",
                             density_alpha = 0.2)
 
-# ============================================================================
 # OPTIONAL: Run without censoring weights for comparison
-# ============================================================================
 
 # If you want to compare with uncorrected version
 all_results_uncorrected <- list()
@@ -198,9 +187,8 @@ for (period in 1:4) {
   )
 }
 
-# ============================================================================
+# Below I played around with possible binnings of the exposure (TLDR: results did not change much)
 # Binning Exposure
-# ============================================================================
 
 bin_width = 20
 df$A_bin <- floor(df$A / bin_width) * bin_width + bin_width/2
@@ -244,9 +232,6 @@ analyze_continuous_treatment_effect <- function(df, period,
   return(results)
 }
 
-# ============================================================================
-# RUN YOUR EXISTING WORKFLOW - NO CHANGES NEEDED
-# ============================================================================
 
 # Run analysis for all periods (now with censoring correction)
 all_results <- list()
