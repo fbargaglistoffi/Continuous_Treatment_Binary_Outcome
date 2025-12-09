@@ -2,8 +2,6 @@
 
 Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on an extension of Kennedy et al. (2017).
 
-![](erc_kennedy_binaryoutcome_censoring_weights.png)
-
 ## Overview
 
 This code estimates causal exposure-response curves for continuous treatments when:
@@ -51,6 +49,8 @@ for (period in 1:4) {
 
 plot_dose_response_enhanced(all_results, df, xlim = c(0, 500), ylim = c(0, 0.2))
 ```
+
+![](erc_kennedy_binaryoutcome_censoring_weights.png)
 
 ## Files
 
