@@ -5,8 +5,8 @@ Doubly-robust estimation of continuous treatment effects for binary outcomes wit
 ## Overview
 
 This code estimates causal exposure-response curves for continuous treatments when:
-- The outcome is binary (e.g., disease incidence)
-- Observations may be censored (missing at random)
+- The outcome is binary 
+- Observations may be censored
 
 The approach uses SuperLearner ensembles for flexible nuisance function estimation, doubly-robust pseudo-outcomes, and local polynomial regression with cross-validated bandwidth selection.
 
