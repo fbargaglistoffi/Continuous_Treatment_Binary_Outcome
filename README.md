@@ -1,4 +1,4 @@
-# Doubly-robust Exposure Response Curve for Binary Outcomes
+# Doubly-robust Exposure Response Curve for Binary Outcomes with Censoring Weights
 
 Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on Kennedy (2017).
 
