@@ -1,6 +1,4 @@
-# ============================================================================
-# FIXED KENNEDY METHOD WITH INTEGRATED CENSORING WEIGHTS
-# ============================================================================
+# Kennedy Doubly Robust Method with Incorporated Censoring Weigths
 
 ctseff_binary <- function(y, a, x, bw.seq, 
                           n.pts = 100, 
@@ -29,9 +27,7 @@ ctseff_binary <- function(y, a, x, bw.seq,
   full_x <- x
   full_cens <- cens
   
-  # ----------------------------------------------------------------------------
   # STEP 1: Handle censoring and determine range
-  # ----------------------------------------------------------------------------
   
   # First, identify uncensored observations
   if (!is.null(cens)) {
@@ -49,9 +45,7 @@ ctseff_binary <- function(y, a, x, bw.seq,
     }
   }
   
-  # ----------------------------------------------------------------------------
   # STEP 2: Estimate Censoring Weights (if requested)
-  # ----------------------------------------------------------------------------
   
   w_cens <- rep(1, length(y))  # Default: no weighting
   
@@ -132,9 +126,7 @@ ctseff_binary <- function(y, a, x, bw.seq,
   colnames(x) <- colnames(x.new)
   xa.new <- data.frame(xa.new)
   
-  # ----------------------------------------------------------------------------
   # STEP 3: Estimate Nuisance Functions with Weights
-  # ----------------------------------------------------------------------------
   
   # Treatment model
   pimod <- SuperLearner(Y = a, X = x, 
@@ -159,9 +151,7 @@ ctseff_binary <- function(y, a, x, bw.seq,
   muhat.vals <- mumod$SL.predict
   muhat.vals <- pmin(pmax(muhat.vals, 0.001), 0.999)
   
-  # ----------------------------------------------------------------------------
   # STEP 4: Construct Densities and Pseudo-outcome
-  # ----------------------------------------------------------------------------
   
   a.std <- (xa.new$a - pimod.vals) / sqrt(pi2mod.vals)
   
@@ -194,9 +184,7 @@ ctseff_binary <- function(y, a, x, bw.seq,
   # Pseudo-outcome
   pseudo.out <- (y - muhat) * (varpihat / pihat) + mhat
   
-  # ----------------------------------------------------------------------------
   # STEP 5: Bandwidth Selection
-  # ----------------------------------------------------------------------------
   
   w.fn <- function(bw) {
     w.avals <- NULL
@@ -235,18 +223,16 @@ ctseff_binary <- function(y, a, x, bw.seq,
   h.opt <- bw.seq[which.min(risk.est)]
   bw.risk <- data.frame(bw = bw.seq, risk = risk.est)
   
-  # ----------------------------------------------------------------------------
+
   # STEP 6: Final Estimation
-  # ----------------------------------------------------------------------------
   
   final_curve <- locpoly(a, pseudo.out, bandwidth = h.opt)
   est <- approx(final_curve$x, final_curve$y, xout = a.vals, rule = 2)$y
   est <- pmin(pmax(est, 0), 1)
   
-  # ----------------------------------------------------------------------------
+
   # STEP 7: Standard Errors
-  # ----------------------------------------------------------------------------
-  
+
   se <- NULL
   for (a.val in a.vals) {
     a.std <- (a - a.val) / h.opt
