@@ -1,5 +1,5 @@
-# Fully customizable enhanced plotting function with density plot
-plot_dose_response_enhanced <- function(all_results, df, 
+# Plotting function with density plot
+plot_dose_response <- function(all_results, df, 
                                         xlim = c(0, 500), 
                                         ylim = c(0, 0.2),
                                         x_tick_interval = NULL,  # Auto-calculate if NULL

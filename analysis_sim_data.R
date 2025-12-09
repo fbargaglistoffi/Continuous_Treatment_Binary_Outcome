@@ -2,7 +2,7 @@ rm(list = ls())
 
 setwd("Desktop/KR-project/")
 data <- readRDS("cs_cohort_simulated_data.rds")
-source("kennedy_erf_binary.R")
+#source("kennedy_erf_binary.R") # uncomment to run simple complete-case analysis
 source("kennedy_erf_binary_censoring.R")
 source("plotting.R")
 
@@ -56,66 +56,8 @@ check_censoring <- function(data) {
 
 check_censoring(df)
 
-# Missing At Random Analysis
 
-# Function to handle your specific data structure
-analyze_continuous_treatment_effect <- function(df, period, 
-                                                bw.seq = seq(0.1, 2, length.out = 50)) {
-  
-  # Extract variables for this period
-  cens_var <- paste0("cens_oud_period_", period)
-  oud_var <- paste0("oud_period_", period)
-  
-  # Covariates
-  W_vars <- c("W_01", paste0("W_", 2:14))
-  
-  # Apply censoring
-  cens <- df[[cens_var]]
-  y <- df[[oud_var]]
-  a <- df$A
-  x <- as.matrix(df[, W_vars])
-  
-  # Run modified Kennedy method
-  results <- ctseff_binary(
-    y = y,
-    a = a,
-    x = x,
-    cens = cens,
-    bw.seq = bw.seq,
-    n.pts = 100,
-    sl.lib = c("SL.glm", "SL.earth", "SL.gam", "SL.ranger")
-  )
-  
-  return(results)
-}
-
-# Run analysis for all periods
-all_results <- list()
-for (period in 1:4) {
-  cat("\nAnalyzing Period", period, "\n")
-  all_results[[period]] <- analyze_continuous_treatment_effect(df, period)
-  
-  # Check bandwidth selection
-  cat("Optimal bandwidth:", 
-      all_results[[period]]$bw.risk$bw[which.min(all_results[[period]]$bw.risk$risk)], "\n")
-}
-
-
-
-# Example usage with density
-plot_dose_response_enhanced(all_results, df, 
-                            xlim = c(0, 500), 
-                            ylim = c(0, 0.2))
-
-# Customize density appearance
-plot_dose_response_enhanced(all_results, df, 
-                            xlim = c(50, 350), 
-                            ylim = c(0, 0.1),
-                            density_height = 0.2,    # Make density taller
-                            density_color = "#2E86AB", # Match main color
-                            density_alpha = 0.2)
-
-# Analysis function
+# Analysis function incorporating censoring weights
 analyze_continuous_treatment_effect <- function(df, period, 
                                                 bw.seq = seq(0.1, 2, length.out = 50),
                                                 use_censoring_weights = TRUE) {
@@ -151,7 +93,7 @@ analyze_continuous_treatment_effect <- function(df, period,
   return(results)
 }
 
-# Run analysis for all periods (now with censoring correction)
+# Run analysis for all periods (with censoring correction)
 all_results <- list()
 for (period in 1:4) {
   cat("\nAnalyzing Period", period, "\n")
@@ -162,40 +104,35 @@ for (period in 1:4) {
       all_results[[period]]$bw.risk$bw[which.min(all_results[[period]]$bw.risk$risk)], "\n")
 }
 
-# Your existing plotting code works as-is
-plot_dose_response_enhanced(all_results, df, 
-                            xlim = c(0, 500), 
-                            ylim = c(0, 0.2))
 
 # Customize density appearance
-plot_dose_response_enhanced(all_results, df, 
+plot_dose_response(all_results, df, 
                             xlim = c(50, 350), 
                             ylim = c(0, 0.1),
                             density_height = 0.2,
                             density_color = "#2E86AB",
                             density_alpha = 0.2)
 
-# OPTIONAL: Run without censoring weights for comparison
+# OPTIONAL: Uncomment to Run without censoring weights for comparison
 
-# If you want to compare with uncorrected version
-all_results_uncorrected <- list()
-for (period in 1:4) {
-  cat("\nAnalyzing Period", period, " (no censoring weights)\n")
-  all_results_uncorrected[[period]] <- analyze_continuous_treatment_effect(
-    df, period, 
-    use_censoring_weights = FALSE  # Turn off censoring weights
-  )
-}
+# # If you want to compare with uncorrected version
+# all_results_uncorrected <- list()
+# for (period in 1:4) {
+#   cat("\nAnalyzing Period", period, " (no censoring weights)\n")
+#   all_results_uncorrected[[period]] <- analyze_continuous_treatment_effect(
+#     df, period, 
+#     use_censoring_weights = FALSE  # Turn off censoring weights
+#   )
+# }
 
-# Below I played around with possible binnings of the exposure (TLDR: results did not change much)
+# Below I played around with possible binnings of the exposure to see if results were sensitive to binning (TLDR: results did not change much)
 # Binning Exposure
-
 bin_width = 20
+
 df$A_bin <- floor(df$A / bin_width) * bin_width + bin_width/2
 
 plot(density(df$A))
 plot(density(df$A_bin))
-
 
 analyze_continuous_treatment_effect <- function(df, period, 
                                                 bw.seq = seq(0.1, 2, length.out = 50),
@@ -232,8 +169,7 @@ analyze_continuous_treatment_effect <- function(df, period,
   return(results)
 }
 
-
-# Run analysis for all periods (now with censoring correction)
+# Run analysis for all periods
 all_results <- list()
 for (period in 1:4) {
   cat("\nAnalyzing Period", period, "\n")
@@ -244,13 +180,9 @@ for (period in 1:4) {
       all_results[[period]]$bw.risk$bw[which.min(all_results[[period]]$bw.risk$risk)], "\n")
 }
 
-# Your existing plotting code works as-is
-plot_dose_response_enhanced(all_results, df, 
-                            xlim = c(0, 500), 
-                            ylim = c(0, 0.2))
 
 # Customize density appearance
-plot_dose_response_enhanced(all_results, df, 
+plot_dose_response(all_results, df, 
                             xlim = c(50, 350), 
                             ylim = c(0, 0.1),
                             density_height = 0.2,
