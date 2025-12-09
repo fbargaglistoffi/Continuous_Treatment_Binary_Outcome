@@ -1,5 +1,9 @@
 # Doubly-robust Exposure Response Curve for Binary Outcomes with Censoring Weights
 
+[![R](https://img.shields.io/badge/R-%3E%3D4.0-blue)](https://www.r-project.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+
 Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on an extension of Kennedy et al. (2017).
 
 ## Overview
