@@ -1,14 +1,12 @@
-# Doubly-robust Exposure Response Curve for Binary Outcomes
+# Doubly-robust Exposure Response Curve for Binary Outcomes with Censoring Weights
 
-Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on Kennedy (2017).
-
-![](erc_kennedy_binaryoutcome_censoring_weights.png)
+Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on an extension of Kennedy et al. (2017).
 
 ## Overview
 
 This code estimates causal exposure-response curves for continuous treatments when:
-- The outcome is binary (e.g., disease incidence)
-- Observations may be censored (missing at random)
+- The outcome is binary 
+- Observations may be censored
 
 The approach uses SuperLearner ensembles for flexible nuisance function estimation, doubly-robust pseudo-outcomes, and local polynomial regression with cross-validated bandwidth selection.
 
@@ -52,6 +50,8 @@ for (period in 1:4) {
 plot_dose_response_enhanced(all_results, df, xlim = c(0, 500), ylim = c(0, 0.2))
 ```
 
+![](erc_kennedy_binaryoutcome_censoring_weights.png)
+
 ## Files
 
 | File | Description |
@@ -71,7 +71,6 @@ plot_dose_response_enhanced(all_results, df, xlim = c(0, 500), ylim = c(0, 0.2))
 | `cens` | Censoring indicator (1 = observed) |
 | `use_censoring_weights` | Apply inverse probability of censoring weighting |
 | `stabilize_weights` | Use stabilized weights (recommended) |
-| `n.pts` | Number of evaluation points (default: 100) |
 
 ## Reference
 
