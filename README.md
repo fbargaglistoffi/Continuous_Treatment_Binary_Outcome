@@ -1,6 +1,6 @@
 # Doubly-robust Exposure Response Curve for Binary Outcomes with Censoring Weights
 
-Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on Kennedy (2017).
+Doubly-robust estimation of continuous treatment effects for binary outcomes with censoring, based on an extension of Kennedy et al. (2017).
 
 ![](erc_kennedy_binaryoutcome_censoring_weights.png)
 
